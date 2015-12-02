@@ -1,48 +1,66 @@
+/*
+   Solves maze, in 4 direction movement, not always shortest path.
+ */
 #include<stdio.h>
-int sol[100][100]; // final solution matrix + to check visited
-int p,q,maze[100][100];
-int solve(int m,int n);
-int main(){
-	int i,j;
-	printf(" Enter dimension of maze : ");
-	scanf("%d%d",&p,&q);
-	printf(" Enter input  maze : \n");
-	for(i=0;i<p;i++){
-		for(j=0;j<q;j++){
-			scanf("%d",&maze[i][j]);
-			sol[i][j]=0;
-		}
-	}
-	solve(0,0);
-	for(i=0;i<p;i++){
-		for(j=0;j<q;j++)
-			printf("%d ",sol[i][j]);
-		printf("\n");
-	}
+int m,n,visited[20][20],sol[20][20];	// Size of maze m rows, n coloumns
+
+// Returns 1 if a cell is not visited and is not blocked or out of bounds
+int isSafe(int maze[20][20],int r,int c) 	{
+	if(r>=0 && c>=0 && r<m && c<n && maze[r][c]==1 && visited[r][c]==0)
+		return 1;
+	else
+		return 0;
 }
 
-
-int solve(int m,int n){
-	if(maze[m][n]!=1||m>=p||n>=q||m<0||n<0)
-		return 0;
-	if(m==p-1&&n==q-1){
-		sol[m][n]=1;
+int Solve(int maze[20][20],int r,int c){
+	if(r==m-1&&c==n-1){ // We reached our destination
+		sol[m-1][n-1]=1;
 		return 1;
 	}
-	sol[m][n]=1;
-	if(n!=q-1&&sol[m][n+1]!=2&&solve(m,n+1)==1)
-		return 1;
-	if(m!=p-1&&sol[m+1][n]!=2&&solve(m+1,n)==1)
-		return 1;
-/*	if(m!=0&&sol[m-1][n]!=2&&solve(m-1,n)==1)
-		return 1;
-	if(n!=0&&sol[m][n-1]!=2&&solve(m,n-1)==1)
-		return 1;
+	if(isSafe(maze,r,c)){
+		sol[r][c]=1; // mark solution, check four directions
+		visited[r][c]=1;
+		if(Solve(maze,r,c+1))
+			return 1;
+		if(Solve(maze,r+1,c))
+			return 1;
+		if(Solve(maze,r-1,c))
+			return 1;
+		if(Solve(maze,r,c-1))
+			return 1;
+	// Diagonal movement, uncomment to move through diagonals
+		/*
+		if(Solve(maze,r+1,c+1))
+			return 1;
+		if(Solve(maze,r-1,c-1))
+			return 1;
+		if(Solve(maze,r+1,c-1))
+			return 1;
+		if(Solve(maze,r-1,c+1))
+			return 1;
 		*/
-
-	sol[m][n]=2;
+		sol[r][c]=0; //  Unmark solution , backtrack
+		return 0;
+	}
 	return 0;
 }
 
-
-			
+int main(){
+	int i,j, maze[20][20];
+	scanf("%d%d",&m,&n);
+	for(i=0;i<m;i++){
+		for(j=0;j<n;j++){
+			scanf("%d",&maze[i][j]);
+			sol[i][j]=0;
+			visited[i][j]=0;
+		}
+	}
+	Solve(maze,0,0);
+	
+	for(i=0;i<m;i++){
+		for(j=0;j<n;j++){
+			printf(" %d",sol[i][j]);
+		}
+		printf("\n");
+	}
+}
