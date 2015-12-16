@@ -10,9 +10,8 @@ int gcd(int a,int b)
 int main(int args,char **s)
 
 {
-	int a=2,b=6;
-//	int a,b;
-//	printf(" Enter two numbers : ");
-//	scanf("%d%d",&a,&b);
-	printf("gcd(%d,%s) = %d\n",a,s[2],gcd(a,b));
+	int a,b;
+	printf(" Enter two numbers : ");
+	scanf("%d%d",&a,&b);
+	printf("gcd(%d,%d) = %d\n",a,b,gcd(a,b));
 }
