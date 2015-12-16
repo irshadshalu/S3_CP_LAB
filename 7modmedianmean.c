@@ -20,9 +20,9 @@ int main()
 				a[j+1]=temp;
 			}
 	max=count=1;	
-	for(i=0;i<n-1;i++)
+	for(i=0;i<n;i++)
 	{
-		if(a[i]==a[i+1])
+		if(i+1!= n && a[i]==a[i+1])
 			count++;
 		else
 		{
@@ -33,9 +33,9 @@ int main()
 	}
 	if(max>1)
 	{
-		for(i=0;i<n-1;i++)
+		for(i=0;i<n;i++)
 		{
-			if(a[i]==a[i+1])
+			if(i+1!=n && a[i]==a[i+1])
 				count++;
 			else
 			{
